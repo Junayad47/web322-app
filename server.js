@@ -7,8 +7,8 @@ No part of this assignment has been copied manually or electronically from any o
 Name: Junayad Bin Forhad
 Student ID: 160158218
 Date: 29/09/2024
-Vercel Web App URL: 
-GitHub Repository URL: 
+Vercel Web App URL: https://web322-app-chi.vercel.app/about
+GitHub Repository URL: https://github.com/Junayad47/web322-app
 
 ********************************************************************************/ 
 
