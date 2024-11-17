@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Item</title>
+    <link rel="stylesheet" href="/public/css/main.css">
+</head>
+
+<body>
+    <div class="container" style="padding-top: 90px;">
+        <h2>Add New Item</h2>
+        <form action="/items/add" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="featureImage">Feature Image:</label>
+                <input class="form-control" id="featureImage" name="featureImage" type="file" />
+            </div>
+
+            <div class="form-group">
+                <label for="title">Item Name:</label>
+                <input class="form-control" id="title" name="title" type="text" />
+            </div>
+
+            <div class="form-group">
+                <label for="price">Price:</label>
+                <input class="form-control" id="price" name="price" type="number" step="0.01" />
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea class="form-control" id="description" name="description"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="category">Category:</label>
+                <select class="form-control" id="category" name="category">
+                    <option value="1">Home, Garden</option>
+                    <option value="2">Electronics</option>
+                    <option value="3">Computers</option>
+                    <option value="4">Video Games</option>
+                    <option value="5">Clothing</option>
+                    <option value="6">Sports & Outdoors</option>
+                    <option value="7">Pets</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="visibility">Visibility:</label>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" id="published" name="published"> Published
+                    </label>
+                </div>
+            </div>
+
+            <input type="submit" class="btn btn-primary pull-right" value="Add Item" />
+        </form>
+    </div>
+    <script src="/public/js/bootstrap.min.js"></script>
+</body>
+
+</html>

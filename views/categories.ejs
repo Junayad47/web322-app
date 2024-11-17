@@ -1,0 +1,39 @@
+<link rel="stylesheet" href="/public/css/main.css">
+<div class="row">
+    <div class="col-md-12">
+        <h2>Categories</h2>
+        <hr />
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Category ID</th>
+                        <th>Category Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (categories && categories.length) { %>
+                        <% categories.forEach(category=> { %>
+                            <tr>
+                                <td><a href="/items?category=<%= category.id %>">
+                                        <%= category.id %>
+                                    </a></td>
+                                <td><a href="/items?category=<%= category.name %>">
+                                        <%= category.name %>
+                                    </a></td>
+                            </tr>
+                            <% }) %>
+                                <% } else { %>
+                                    <tr>
+                                        <td colspan="2" class="text-center">
+                                            <strong>
+                                                <%= message %>
+                                            </strong>
+                                        </td>
+                                    </tr>
+                                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

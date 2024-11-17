@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Items</title>
+    <link rel="stylesheet" href="/public/css/main.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Items</h2>
+                <hr />
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Item ID</th>
+                                <th>Title</th>
+                                <th>ItemDate</th>
+                                <th>Price</th>
+                                <th>Category</th>
+                                <th>Published</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (items && items.length) { %>
+                                <% items.forEach(item=> { %>
+                                    <tr>
+                                        <td>
+                                            <%= item.id %>
+                                        </td>
+                                        <td>
+                                            <%= item.title %>
+                                        </td>
+                                        <td>
+                                            <%= item.itemDate %>
+                                        </td>
+                                        <td>
+                                            <%= item.price %>
+                                        </td>
+                                        <td><a href="/items?category=<%= item.category %>">
+                                                <%= item.category %>
+                                            </a></td>
+                                        <td>
+                                            <%= item.published ? 'Yes' : 'No' %>
+                                        </td>
+                                    </tr>
+                                    <% }) %>
+                                        <% } else { %>
+                                            <tr>
+                                                <td colspan="6" class="text-center">
+                                                    <strong>
+                                                        <%= message %>
+                                                    </strong>
+                                                </td>
+                                            </tr>
+                                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/public/js/bootstrap.min.js"></script>
+</body>
+
+</html>

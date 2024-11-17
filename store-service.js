@@ -8,11 +8,11 @@ let categories = [];
 // Initialize the store service by reading data from JSON files
 function initialize() {
     return Promise.all([
-        fs.readFile(path.join(__dirname, "data", "items.json"), 'utf8')
+        fs.readFile(path.join(__dirname, 'data', 'items.json'), 'utf8')
             .then(data => {
                 items = JSON.parse(data);
             }),
-        fs.readFile(path.join(__dirname, "data", "categories.json"), 'utf8')
+        fs.readFile(path.join(__dirname, 'data', 'categories.json'), 'utf8')
             .then(data => {
                 categories = JSON.parse(data);
             })
@@ -30,7 +30,7 @@ function getPublishedItems() {
         if (publishedItems.length > 0) {
             resolve(publishedItems);
         } else {
-            reject("No results returned!");
+            reject('No results returned!');
         }
     });
 }
@@ -41,7 +41,7 @@ function getAllItems() {
         if (items.length > 0) {
             resolve(items);
         } else {
-            reject("No results returned!");
+            reject('No results returned!');
         }
     });
 }
@@ -52,7 +52,7 @@ function getCategories() {
         if (categories.length > 0) {
             resolve(categories);
         } else {
-            reject("No results returned!");
+            reject('No results returned!');
         }
     });
 }
@@ -64,6 +64,8 @@ function addItem(itemData) {
         itemData.published = itemData.published === undefined ? false : true;
         // Set new item ID
         itemData.id = items.length + 1;
+        // Set the item date
+        itemData.itemDate = new Date().toISOString().split('T')[0];
         // Add new item to array
         items.push(itemData);
         resolve(itemData);
@@ -77,7 +79,7 @@ function getItemsByCategory(category) {
         if (filteredItems.length > 0) {
             resolve(filteredItems);
         } else {
-            reject("No results returned!");
+            reject('No results returned!');
         }
     });
 }
@@ -89,7 +91,7 @@ function getItemsByMinDate(minDateStr) {
         if (filteredItems.length > 0) {
             resolve(filteredItems);
         } else {
-            reject("No results returned!");
+            reject('No results returned!');
         }
     });
 }
@@ -101,7 +103,19 @@ function getItemById(id) {
         if (item) {
             resolve(item);
         } else {
-            reject("No result returned!");
+            reject('No result returned!');
+        }
+    });
+}
+
+// Get published items by category
+function getPublishedItemsByCategory(category) {
+    return new Promise((resolve, reject) => {
+        const publishedItemsByCategory = items.filter(item => item.published && item.category === category);
+        if (publishedItemsByCategory.length > 0) {
+            resolve(publishedItemsByCategory);
+        } else {
+            reject('No results returned!');
         }
     });
 }
@@ -115,5 +129,6 @@ module.exports = {
     addItem,
     getItemsByCategory,
     getItemsByMinDate,
-    getItemById
+    getItemById,
+    getPublishedItemsByCategory
 };

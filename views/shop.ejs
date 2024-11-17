@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop</title>
+    <link rel="stylesheet" href="/public/css/main.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <% if (data.item) { %>
+                    <article>
+                        <h2>
+                            <%= data.item.title %>
+                        </h2>
+                        <img src="<%= data.item.featureImage %>" alt="<%= data.item.title %>" class="img-fluid">
+                        <br><br>
+                        <%= helpers.safeHTML(data.item.body) %>
+                            <br><br>
+                            <strong>Category:</strong>
+                            <%= data.item.category %><br>
+                                <strong>Price:</strong> $<%= data.item.price %><br>
+                                    <strong>Last Updated:</strong>
+                                    <%= data.item.itemDate %>
+                    </article>
+                    <% } else { %>
+                        <div class="col-md-12 text-center">
+                            <h2>
+                                <%= data.message %>
+                            </h2>
+                            <p>Please try another Item / Category</p>
+                        </div>
+                        <% } %>
+            </div>
+            <div class="col-md-4">
+                <% if (data.items && data.items.length> 0) { %>
+                    <h4>Items</h4>
+                    <ul>
+                        <% data.items.forEach(item=> { %>
+                            <li><a href="/shop/<%= item.id %>?category=<%= viewingCategory %>">
+                                    <%= item.title %>
+                                </a></li>
+                            <% }) %>
+                    </ul>
+                    <% } %>
+                        <% if (data.categories && data.categories.length> 0) { %>
+                            <h4>Categories</h4>
+                            <ul>
+                                <% data.categories.forEach(category=> { %>
+                                    <li><a href="/shop?category=<%= category.id %>">
+                                            <%= category.name %>
+                                        </a></li>
+                                    <% }) %>
+                            </ul>
+                            <% } %>
+            </div>
+        </div>
+    </div>
+    <script src="/public/js/bootstrap.min.js"></script>
+</body>
+
+</html>

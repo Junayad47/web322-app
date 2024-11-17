@@ -12,8 +12,10 @@
   "description": "Assignment 3 for web322",
   "dependencies": {
     "cloudinary": "^2.5.1",
+    "ejs": "^3.1.10",
     "express": "^4.21.0",
     "multer": "^1.4.5-lts.1",
-    "streamifier": "^0.1.1"
+    "streamifier": "^0.1.1",
+    "strip-js": "^1.2.0"
   }
 }
