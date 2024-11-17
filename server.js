@@ -45,6 +45,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Set view engine to EJS
 app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views')); // Explicitly set the views directory
 
 // Middleware to set activeRoute based on the current route
 app.use((req, res, next) => {
@@ -75,18 +76,18 @@ app.get('/shop', (req, res) => {
             if (items.length > 0) {
                 viewData.item = items[0];
             } else {
-                viewData.message = 'No results';
+                viewData.message = 'no results';
             }
         })
         .catch(() => {
-            viewData.message = 'No results';
+            viewData.message = 'no results';
         })
         .then(storeService.getCategories)
         .then(categories => {
             viewData.categories = categories;
         })
         .catch(() => {
-            viewData.categoriesMessage = 'No results';
+            viewData.categoriesMessage = 'no results';
         })
         .then(() => {
             res.render('shop', { data: viewData, viewingCategory: category });
@@ -103,7 +104,7 @@ app.get('/shop/:id', (req, res) => {
             viewData.item = item;
         })
         .catch(() => {
-            viewData.message = 'No results';
+            viewData.message = 'no results';
         })
         .then(() => storeService.getPublishedItemsByCategory(category))
         .then(items => {
@@ -117,7 +118,7 @@ app.get('/shop/:id', (req, res) => {
             viewData.categories = categories;
         })
         .catch(() => {
-            viewData.categoriesMessage = 'No results';
+            viewData.categoriesMessage = 'no results';
         })
         .then(() => {
             res.render('shop', { data: viewData, viewingCategory: category });
@@ -130,18 +131,17 @@ app.get('/items', (req, res) => {
         // Filter items by category
         storeService.getItemsByCategory(req.query.category)
             .then(items => res.render('items', { items: items }))
-            .catch(err => res.render('items', { message: 'No results' }));
+            .catch(err => res.render('items', { message: 'no results' }));
     } else if (req.query.minDate) {
-        
         // Filter items by minimum date
         storeService.getItemsByMinDate(req.query.minDate)
             .then(items => res.render('items', { items: items }))
-            .catch(err => res.render('items', { message: 'No results' }));
+            .catch(err => res.render('items', { message: 'no results' }));
     } else {
         // Get all items
         storeService.getAllItems()
             .then(items => res.render('items', { items: items }))
-            .catch(err => res.render('items', { message: 'No results' }));
+            .catch(err => res.render('items', { message: 'no results' }));
     }
 });
 
@@ -156,7 +156,7 @@ app.get('/item/:id', (req, res) => {
 app.get('/categories', (req, res) => {
     storeService.getCategories()
         .then(categories => res.render('categories', { categories: categories }))
-        .catch(err => res.render('categories', { message: 'No results' }));
+        .catch(err => res.render('categories', { message: 'no results' }));
 });
 
 // Route for rendering the add item page
