@@ -24,6 +24,7 @@
                                 <th>Price</th>
                                 <th>Category</th>
                                 <th>Published</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -48,11 +49,15 @@
                                         <td>
                                             <%= item.published ? 'Yes' : 'No' %>
                                         </td>
+                                        <td>
+                                            <a href="/items/delete/<%= item.id %>"
+                                                class="btn btn-danger btn-sm">remove</a>
+                                        </td>
                                     </tr>
                                     <% }) %>
                                         <% } else { %>
                                             <tr>
-                                                <td colspan="6" class="text-center">
+                                                <td colspan="7" class="text-center">
                                                     <strong>
                                                         <%= message %>
                                                     </strong>

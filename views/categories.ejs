@@ -1,39 +1,60 @@
-<link rel="stylesheet" href="/public/css/main.css">
-<div class="row">
-    <div class="col-md-12">
-        <h2>Categories</h2>
-        <hr />
-        <div class="table-responsive">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Category ID</th>
-                        <th>Category Name</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% if (categories && categories.length) { %>
-                        <% categories.forEach(category=> { %>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categories</title>
+    <link rel="stylesheet" href="/public/css/main.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Categories</h2>
+                <hr />
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
                             <tr>
-                                <td><a href="/items?category=<%= category.id %>">
-                                        <%= category.id %>
-                                    </a></td>
-                                <td><a href="/items?category=<%= category.name %>">
-                                        <%= category.name %>
-                                    </a></td>
+                                <th>Category ID</th>
+                                <th>Category Name</th>
+                                <th></th>
                             </tr>
-                            <% }) %>
-                                <% } else { %>
+                        </thead>
+                        <tbody>
+                            <% if (categories && categories.length) { %>
+                                <% categories.forEach(category=> { %>
                                     <tr>
-                                        <td colspan="2" class="text-center">
-                                            <strong>
-                                                <%= message %>
-                                            </strong>
+                                        <td><a href="/items?category=<%= category.id %>">
+                                                <%= category.id %>
+                                            </a></td>
+                                        <td><a href="/items?category=<%= category.category %>">
+                                                <%= category.category %>
+                                            </a></td>
+                                        <td>
+                                            <a href="/categories/delete/<%= category.id %>"
+                                                class="btn btn-danger btn-sm">remove</a>
                                         </td>
                                     </tr>
-                                    <% } %>
-                </tbody>
-            </table>
+                                    <% }) %>
+                                        <% } else { %>
+                                            <tr>
+                                                <td colspan="3" class="text-center">
+                                                    <strong>
+                                                        <%= message %>
+                                                    </strong>
+                                                </td>
+                                            </tr>
+                                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
-</div>
+    <script src="/public/js/bootstrap.min.js"></script>
+</body>
+
+</html>

@@ -1,11 +1,11 @@
 /*********************************************************************************
- WEB322 – Assignment 04
+ WEB322 – Assignment 05
  I declare that this assignment is my own work in accordance with Seneca Academic Policy.  
  No part of this assignment has been copied manually or electronically from any other source (including 3rd party web sites) or distributed to other students.
  
  Name: Junayad Bin Forhad
  Student ID: 160158218
- Date: 17/11/2024
+ Date: 03/12/2024
  Vercel Web App URL: https://web322-app-chi.vercel.app/about
  GitHub Repository URL: https://github.com/Junayad47/web322-app
  
@@ -19,12 +19,37 @@ const cloudinary = require('cloudinary').v2;
 const streamifier = require('streamifier');
 const storeService = require('./store-service');
 
+const Sequelize = require('sequelize');
+
+// set up sequelize to point to the postgres database
+const sequelize = new Sequelize('postgresql://web322asg5_owner:jcNoE8SLJ7Uw@ep-shiny-term-a5dt70gz.us-east-2.aws.neon.tech/web322asg5?sslmode=require', {
+  dialect: 'postgres',
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false
+    }
+  }
+});
+
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log('Connection has been established successfully.');
+  })
+  .catch((err) => {
+    console.log('Unable to connect to the database:', err);
+  });
+
+
+
 // Create Express app
 const app = express();
 const HTTP_PORT = process.env.PORT || 8080;
 
 const helpers = require('./helpers');
 app.locals.helpers = helpers;
+
 
 // Cloudinary configuration
 cloudinary.config({
@@ -34,7 +59,8 @@ cloudinary.config({
     secure: true
 });
 
-// Set up multer for handling file uploads (No disk storage)
+
+// Multer for handling file uploads
 const upload = multer();
 
 // Serve static files from the 'public' directory
@@ -145,6 +171,7 @@ app.get('/items', (req, res) => {
     }
 });
 
+
 // Route for getting a single item by ID
 app.get('/item/:id', (req, res) => {
     storeService.getItemById(req.params.id)
@@ -159,9 +186,19 @@ app.get('/categories', (req, res) => {
         .catch(err => res.render('categories', { message: 'no results' }));
 });
 
+
+
 // Route for rendering the add item page
 app.get('/items/add', (req, res) => {
-    res.render('addItem', { layout: 'partials/main' });
+    storeService.getCategories()
+        .then(data => res.render('addItem', { 
+            layout: 'partials/main', 
+            categories: data 
+        }))
+        .catch(() => res.render('addItem', { 
+            layout: 'partials/main', 
+            categories: [] 
+        }));
 });
 
 // Route for adding a new item
@@ -201,6 +238,32 @@ app.post('/items/add', upload.single('featureImage'), (req, res) => {
             .then(() => res.redirect('/items'))
             .catch(err => res.status(500).json({ message: err }));
     }
+});
+
+// Route for rendering the add category page
+app.get('/categories/add', (req, res) => {
+    res.render('addCategory', { layout: 'partials/main' });
+});
+
+// Route for adding a new category
+app.post('/categories/add', (req, res) => {
+    storeService.addCategory(req.body)
+        .then(() => res.redirect('/categories'))
+        .catch(err => res.status(500).json({ message: err }));
+});
+
+// Route for deleting a category by ID
+app.get('/categories/delete/:id', (req, res) => {
+    storeService.deleteCategoryById(req.params.id)
+        .then(() => res.redirect('/categories'))
+        .catch(err => res.status(500).send('Unable to Remove Category / Category not found'));
+});
+
+// Route for deleting an item by ID
+app.get('/items/delete/:id', (req, res) => {
+    storeService.deleteItemById(req.params.id)
+        .then(() => res.redirect('/items'))
+        .catch(err => res.status(500).send('Unable to Remove Item / Item not found'));
 });
 
 // 404 handler for undefined routes
