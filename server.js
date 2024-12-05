@@ -1,5 +1,3 @@
-
-
 /*********************************************************************************
 WEB322 – Assignment 05
 I declare that this assignment is my own work in accordance with Seneca Academic Policy.  
@@ -11,7 +9,7 @@ Date: 04/12/2024
 Vercel Web App URL: https://web322-app-chi.vercel.app/about
 GitHub Repository URL: https://github.com/Junayad47/web322-app
 
-********************************************************************************/ 
+********************************************************************************/
 
 // Import required modules
 const express = require('express');
@@ -20,39 +18,40 @@ const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
 const streamifier = require('streamifier');
 const storeService = require('./store-service'); // Import the store service
+const serverless = require('serverless-http');
 
 const Sequelize = require('sequelize');
 
-// set up sequelize to point to the postgres database
-const sequelize = new Sequelize('postgresql://web322asg5_owner:jcNoE8SLJ7Uw@ep-shiny-term-a5dt70gz.us-east-2.aws.neon.tech/web322asg5?sslmode=require', {
-  dialect: 'postgres',
-  dialectOptions: {
-    ssl: {
-      require: true,
-      rejectUnauthorized: false
+// Modify Sequelize configuration for Vercel
+const sequelize = new Sequelize(process.env.DATABASE_URL || 'postgresql://web322asg5_owner:jcNoE8SLJ7Uw@ep-shiny-term-a5dt70gz.us-east-2.aws.neon.tech/web322asg5?sslmode=require', {
+    dialect: 'postgres',
+    dialectOptions: {
+        ssl: {
+            require: true,
+            rejectUnauthorized: false
+        }
     }
-  }
 });
 
 sequelize
-  .authenticate()
-  .then(() => {
-    console.log('Connection has been established successfully.');
-  })
-  .catch((err) => {
-    console.log('Unable to connect to the database:', err);
-  });
+    .authenticate()
+    .then(() => {
+        console.log('Connection has been established successfully.');
+    })
+    .catch((err) => {
+        console.log('Unable to connect to the database:', err);
+    });
 
 // Create Express app
 const app = express();
 const HTTP_PORT = process.env.PORT || 8080;
 
 const helpers = {
-    formatDate: function(dateObj) {
+    formatDate: function (dateObj) {
         let year = dateObj.getFullYear();
         let month = (dateObj.getMonth() + 1).toString();
         let day = dateObj.getDate().toString();
-        return `${year}-${month.padStart(2, '0')}-${day.padStart(2,'0')}`;
+        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
     }
 };
 
@@ -218,13 +217,13 @@ app.get('/categories', (req, res) => {
 // Route for rendering the add item page
 app.get('/items/add', (req, res) => {
     storeService.getCategories()
-        .then(data => res.render('addItem', { 
-            layout: 'partials/main', 
-            categories: data 
+        .then(data => res.render('addItem', {
+            layout: 'partials/main',
+            categories: data
         }))
-        .catch(() => res.render('addItem', { 
-            layout: 'partials/main', 
-            categories: [] 
+        .catch(() => res.render('addItem', {
+            layout: 'partials/main',
+            categories: []
         }));
 });
 
@@ -300,16 +299,21 @@ app.use((req, res) => {
     res.status(404).render('404');
 });
 
-// Initialize store service and start the server
-storeService.initialize()
-    .then(() => {
-        app.listen(HTTP_PORT, () => {
-            console.log(`Express http server listening on ${HTTP_PORT}`);
+// For Vercel serverless function
+module.exports = serverless(app);
+
+// Local server initialization (for development)
+if (require.main === module) {
+    storeService.initialize()
+        .then(() => {
+            app.listen(HTTP_PORT, () => {
+                console.log(`Express http server listening on ${HTTP_PORT}`);
+            });
+        })
+        .catch(err => {
+            console.error('Failed to initialize store service:', err);
+            app.listen(HTTP_PORT, () => {
+                console.log(`Express http server listening on ${HTTP_PORT}`);
+            });
         });
-    })
-    .catch(err => {
-        console.error('Failed to initialize store service:', err);
-        app.listen(HTTP_PORT, () => {
-            console.log(`Express http server listening on ${HTTP_PORT}`);
-        });
-    });
+}
