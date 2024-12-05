@@ -20,17 +20,19 @@ const streamifier = require('streamifier');
 const storeService = require('./store-service'); // Import the store service
 const serverless = require('serverless-http');
 
-const Sequelize = require('sequelize');
+const { Sequelize } = require('sequelize');
+const pg = require('pg');
 
-// Modify Sequelize configuration for Vercel
+// Sequelize configuration
 const sequelize = new Sequelize(process.env.DATABASE_URL || 'postgresql://web322asg5_owner:jcNoE8SLJ7Uw@ep-shiny-term-a5dt70gz.us-east-2.aws.neon.tech/web322asg5?sslmode=require', {
-    dialect: 'postgres',
-    dialectOptions: {
-        ssl: {
-            require: true,
-            rejectUnauthorized: false
-        }
+  dialect: 'postgres',
+  dialectModule: pg,
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false
     }
+  }
 });
 
 sequelize

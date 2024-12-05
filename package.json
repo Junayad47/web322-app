@@ -9,7 +9,7 @@
   "keywords": [],
   "author": "Junayad Bin Forhad",
   "license": "ISC",
-  "description": "Assignment 3 for web322",
+  "description": "Assignment 5 for web322",
   "dependencies": {
     "cloudinary": "^2.5.1",
     "ejs": "^3.1.10",
@@ -21,5 +21,6 @@
     "serverless-http": "^3.2.0",
     "streamifier": "^0.1.1",
     "strip-js": "^1.2.0"
+    
   }
 }
