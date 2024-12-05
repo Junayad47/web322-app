@@ -1,4 +1,3 @@
-
 const Sequelize = require('sequelize');
 
 // Establish a new Sequelize instance with a PostgreSQL connection
@@ -35,8 +34,14 @@ Item.belongsTo(Category, { foreignKey: 'category' });
 function initialize() {
     return new Promise((resolve, reject) => {
         sequelize.sync()
-            .then(() => resolve())
-            .catch(err => reject("Unable to sync the database"));
+            .then(() => {
+                console.log("Database synchronized successfully.");
+                resolve();
+            })
+            .catch(err => {
+                console.error("Failed to synchronize the database:", err);
+                reject("Unable to sync the database: " + err);
+            });
     });
 }
 
@@ -85,7 +90,6 @@ function getItemById(id) {
         .then(data => data.length > 0 ? resolve(data[0]) : reject("No result returned"))
         .catch(() => reject("No result returned"));
     });
-
 }
 
 // Add a new item to the database
@@ -101,13 +105,28 @@ function addItem(itemData) {
             }
         }
 
-
         // Set the item date to the current date
         itemData.itemDate = new Date();
 
         Item.create(itemData)
             .then(data => resolve(data))
             .catch(() => reject("Unable to create item"));
+    });
+}
+
+// Add a new category to the database
+function addCategory(categoryData) {
+    return new Promise((resolve, reject) => {
+        // Replace empty strings with null values
+        for (let prop in categoryData) {
+            if (categoryData[prop] === "") {
+                categoryData[prop] = null;
+            }
+        }
+
+        Category.create(categoryData)
+            .then(data => resolve(data))
+            .catch(() => reject("Unable to create category"));
     });
 }
 
@@ -145,21 +164,6 @@ function getCategories() {
     });
 }
 
-// Add a new category to the database
-function addCategory(categoryData) {
-    return new Promise((resolve, reject) => {
-        // Replace empty strings with null values
-        for (let prop in categoryData) {
-            if (categoryData[prop] === "") {
-                categoryData[prop] = null;
-            }
-        }
-
-        Category.create(categoryData)
-            .then(data => resolve(data))
-            .catch(() => reject("Unable to create category"));
-    });
-}
 
 // Delete a category by its ID
 function deleteCategoryById(id) {
@@ -167,8 +171,8 @@ function deleteCategoryById(id) {
         Category.destroy({
             where: { id: id }
         })
-        .then(rowsDeleted => rowsDeleted > 0 ? resolve() : reject())
-        .catch(() => reject());
+        .then(rowsDeleted => rowsDeleted > 0 ? resolve() : reject("No category found to delete"))
+        .catch(() => reject("Unable to delete category"));
     });
 }
 
@@ -178,8 +182,8 @@ function deleteItemById(id) {
         Item.destroy({
             where: { id: id }
         })
-        .then(rowsDeleted => rowsDeleted > 0 ? resolve() : reject())
-        .catch(() => reject());
+        .then(rowsDeleted => rowsDeleted > 0 ? resolve() : reject("No item found to delete"))
+        .catch(() => reject("Unable to delete item"));
     });
 }
 

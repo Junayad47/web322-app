@@ -13,6 +13,7 @@
         <div class="row">
             <div class="col-md-12">
                 <h2>Items</h2>
+                <a href="/items/add" class="btn btn-success pull-right">Add Item</a>
                 <hr />
                 <div class="table-responsive">
                     <table class="table">
@@ -20,7 +21,7 @@
                             <tr>
                                 <th>Item ID</th>
                                 <th>Title</th>
-                                <th>ItemDate</th>
+                                <th>Item Date</th>
                                 <th>Price</th>
                                 <th>Category</th>
                                 <th>Published</th>
@@ -28,7 +29,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <% if (items && items.length) { %>
+                            <% if (typeof items !=='undefined' && items.length> 0) { %>
                                 <% items.forEach(item=> { %>
                                     <tr>
                                         <td>
@@ -49,19 +50,15 @@
                                         <td>
                                             <%= item.published ? 'Yes' : 'No' %>
                                         </td>
-                                        <td>
-                                            <a href="/items/delete/<%= item.id %>"
-                                                class="btn btn-danger btn-sm">remove</a>
-                                        </td>
+                                        <td><a href="/items/delete/<%= item.id %>"
+                                                class="btn btn-danger btn-sm">remove</a></td>
                                     </tr>
                                     <% }) %>
                                         <% } else { %>
                                             <tr>
-                                                <td colspan="7" class="text-center">
-                                                    <strong>
+                                                <td colspan="7" class="text-center"><strong>
                                                         <%= message %>
-                                                    </strong>
-                                                </td>
+                                                    </strong></td>
                                             </tr>
                                             <% } %>
                         </tbody>

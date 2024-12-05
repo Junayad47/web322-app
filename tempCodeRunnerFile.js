@@ -1,25 +1,10 @@
-
-
-/*********************************************************************************
-WEB322 – Assignment 05
-I declare that this assignment is my own work in accordance with Seneca Academic Policy.  
-No part of this assignment has been copied manually or electronically from any other source (including 3rd party web sites) or distributed to other students.
-
-Name: Junayad Bin Forhad
-Student ID: 160158218
-Date: 04/12/2024
-Vercel Web App URL: https://web322-app-chi.vercel.app/about
-GitHub Repository URL: https://github.com/Junayad47/web322-app
-
-********************************************************************************/ 
-
 // Import required modules
 const express = require('express');
 const path = require('path');
 const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
 const streamifier = require('streamifier');
-const storeService = require('./store-service'); // Import the store service
+const storeService = require('./store-service');
 
 const Sequelize = require('sequelize');
 
@@ -43,28 +28,24 @@ sequelize
     console.log('Unable to connect to the database:', err);
   });
 
+
+
 // Create Express app
 const app = express();
 const HTTP_PORT = process.env.PORT || 8080;
 
-const helpers = {
-    formatDate: function(dateObj) {
-        let year = dateObj.getFullYear();
-        let month = (dateObj.getMonth() + 1).toString();
-        let day = dateObj.getDate().toString();
-        return `${year}-${month.padStart(2, '0')}-${day.padStart(2,'0')}`;
-    }
-};
-
+const helpers = require('./helpers');
 app.locals.helpers = helpers;
+
 
 // Cloudinary configuration
 cloudinary.config({
     cloud_name: 'dq7dcekye',
     api_key: '325631771362246',
-    api_secret: '325631771362246',
+    api_secret: 'i1dbHFXDgbwOw8d5lTOrzQjoclY',
     secure: true
 });
+
 
 // Multer for handling file uploads
 const upload = multer();
@@ -77,7 +58,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Set view engine to EJS
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, 'views')); // Explicitly set the views directory
 
 // Middleware to set activeRoute based on the current route
 app.use((req, res, next) => {
@@ -87,14 +68,14 @@ app.use((req, res, next) => {
     next();
 });
 
-// Redirect root to about page
-app.get('/', (req, res) => {
-    res.redirect('/about');
-});
-
 // Route for the about page
 app.get('/about', (req, res) => {
     res.render('about', { layout: 'partials/main', title: "Junayad Bin Forhad's Store" });
+});
+
+// Redirect root to shop page
+app.get('/', (req, res) => {
+    res.redirect('/shop');
 });
 
 // Route for shop (published items)
@@ -162,38 +143,21 @@ app.get('/items', (req, res) => {
     if (req.query.category) {
         // Filter items by category
         storeService.getItemsByCategory(req.query.category)
-            .then(items => {
-                if (items.length > 0) {
-                    res.render('items', { items: items });
-                } else {
-                    res.render('items', { message: "no results" });
-                }
-            })
+            .then(items => res.render('items', { items: items }))
             .catch(err => res.render('items', { message: 'no results' }));
     } else if (req.query.minDate) {
         // Filter items by minimum date
         storeService.getItemsByMinDate(req.query.minDate)
-            .then(items => {
-                if (items.length > 0) {
-                    res.render('items', { items: items });
-                } else {
-                    res.render('items', { message: "no results" });
-                }
-            })
+            .then(items => res.render('items', { items: items }))
             .catch(err => res.render('items', { message: 'no results' }));
     } else {
         // Get all items
         storeService.getAllItems()
-            .then(items => {
-                if (items.length > 0) {
-                    res.render('items', { items: items });
-                } else {
-                    res.render('items', { message: "no results" });
-                }
-            })
+            .then(items => res.render('items', { items: items }))
             .catch(err => res.render('items', { message: 'no results' }));
     }
 });
+
 
 // Route for getting a single item by ID
 app.get('/item/:id', (req, res) => {
@@ -205,15 +169,11 @@ app.get('/item/:id', (req, res) => {
 // Route for getting all categories
 app.get('/categories', (req, res) => {
     storeService.getCategories()
-        .then(categories => {
-            if (categories.length > 0) {
-                res.render('categories', { categories: categories });
-            } else {
-                res.render('categories', { message: "no results" });
-            }
-        })
+        .then(categories => res.render('categories', { categories: categories }))
         .catch(err => res.render('categories', { message: 'no results' }));
 });
+
+
 
 // Route for rendering the add item page
 app.get('/items/add', (req, res) => {
@@ -253,11 +213,9 @@ app.post('/items/add', upload.single('featureImage'), (req, res) => {
 
         upload(req).then(uploaded => {
             processItem(uploaded.url);
-        }).catch(err => {
-            console.error('File upload failed:', err);
-            res.status(500).send('File upload failed');
         });
     } else {
+        // If no file was uploaded, process item without image
         processItem('');
     }
 
@@ -308,8 +266,5 @@ storeService.initialize()
         });
     })
     .catch(err => {
-        console.error('Failed to initialize store service:', err);
-        app.listen(HTTP_PORT, () => {
-            console.log(`Express http server listening on ${HTTP_PORT}`);
-        });
+        console.error('Failed to initialize store service module!', err);
     });
