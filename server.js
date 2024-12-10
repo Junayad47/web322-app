@@ -1,4 +1,16 @@
 
+/*********************************************************************************
+WEB322 – Assignment 06
+I declare that this assignment is my own work in accordance with Seneca Academic Policy.  
+No part of this assignment has been copied manually or electronically from any other source (including 3rd party web sites) or distributed to other students.
+
+Name: Junayad Bin Forhad
+Student ID: 160158218
+Date: 10/12/2024
+Vercel Web App URL: https://web322-app-chi.vercel.app/about
+GitHub Repository URL: https://github.com/Junayad47/web322-app
+
+********************************************************************************/ 
 
 
 // Import required modules
