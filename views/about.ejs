@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link rel="stylesheet" href="public/css/main.css" />
+    <link rel="stylesheet" href="/public/css/main.css" />
 
     <title>Junayad Bin Forhad - Assignment 5</title>
 </head>
@@ -18,16 +18,46 @@
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <a class="navbar-brand" href="#">Junayad Bin Forhad - Assignment 5</a>
+            <a class="navbar-brand" href="#">Junayad Bin Forhad - Assignment 6</a>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link" href="/shop">Shop</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="/about">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/items">Items</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/items/add">Add Item</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/categories">Categories</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link <%= activeRoute === '/shop' ? 'active' : '' %>" href="/shop">Shop</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link <%= activeRoute === '/about' ? 'active' : '' %>" href="/about">About</a>
+                    </li>
+                    <% if (session.user) { %>
+                        <li class="nav-item">
+                            <a class="nav-link <%= activeRoute === '/items' ? 'active' : '' %>" href="/items">Items</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link <%= activeRoute === '/items/add' ? 'active' : '' %>"
+                                href="/items/add">Add Item</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link <%= activeRoute === '/categories' ? 'active' : '' %>"
+                                href="/categories">Categories</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link <%= activeRoute === '/userHistory' ? 'active' : '' %>"
+                                href="/userHistory">User History</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/logout">Log Out</a>
+                        </li>
+                        <% } else { %>
+                            <li class="nav-item">
+                                <a class="nav-link <%= activeRoute === '/register' ? 'active' : '' %>"
+                                    href="/register">Register</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link <%= activeRoute === '/login' ? 'active' : '' %>" href="/login">Log
+                                    In</a>
+                            </li>
+                            <% } %>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -38,18 +68,18 @@
         <div class="row">
             <aside class="col-md-3">
                 <h2>About</h2>
-                <p>Hi there! My name is Junayad Bin Forhad and I'm currently studying Software Development at Seneca Polytechnic. In my free time I like to play guitar or listen to music. I like hanging out with my friends. I love soccer and basketball. </p>
-                </p>
+                <p>Hi there! My name is Junayad Bin Forhad and I'm currently studying Software Development at Seneca
+                    Polytechnic. In my free time I like to play guitar or listen to music. I like hanging out with my
+                    friends. I love soccer and basketball.</p>
             </aside>
             <section class="main col-md-9">
                 <article>
-                    <h2>Coming Soon !</h2>
+                    <h2>Coming Soon!</h2>
                     <p>
-                        Stay tuned for future updates to this website! I am working hard and consistantly to add more features and content, so check back soon to
+                        Stay tuned for future updates to this website! I am working hard and consistently to add more
+                        features and content, so check back soon to
                         see what's new and drop me some suggestions.
                     </p>
-                    
-                    
                 </article>
             </section>
         </div>

@@ -35,7 +35,7 @@ function initialize() {
     return new Promise((resolve, reject) => {
         sequelize.sync()
             .then(() => {
-                console.log("Database synchronized successfully.");
+                console.log("Database synchronized successfully !");
                 resolve();
             })
             .catch(err => {
@@ -163,7 +163,6 @@ function getCategories() {
             .catch(() => reject("No results returned"));
     });
 }
-
 
 // Delete a category by its ID
 function deleteCategoryById(id) {

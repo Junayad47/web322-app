@@ -11,6 +11,8 @@
   "license": "ISC",
   "description": "Assignment 5 for web322",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "client-sessions": "^0.8.0",
     "cloudinary": "^2.5.1",
     "ejs": "^3.1.10",
     "express": "^4.21.0",
@@ -21,6 +23,5 @@
     "serverless-http": "^3.2.0",
     "streamifier": "^0.1.1",
     "strip-js": "^1.2.0"
-    
   }
 }
